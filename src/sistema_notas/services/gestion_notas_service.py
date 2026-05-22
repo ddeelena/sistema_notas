@@ -1,11 +1,13 @@
 from sistema_notas.models.nota import Nota
 from sistema_notas.repositories.gestion_notas_repository import GestionNotasRepository
 from sistema_notas.exceptions.nota_duplicada_error import NotaFueraDeRangoError, NotaDuplicadaError
+from sistema_notas.exceptions.nota_no_encontrada import NotaNoEncontradaError
 
 NOTA_MIN = 0.0
 NOTA_MAX = 5.0
 MENSAJE_RANGO = f"La nota debe estar entre {NOTA_MIN} y {NOTA_MAX}."
 MENSAJE_DUPLICADA = "Ya existe una nota para esta materia en este semestre."
+MENSAJE_NOTA_NO_ENCONTRADA = "No se encontró una nota para esta materia en este semestre."
 
 class GestionNotasService:
     def __init__(self):
@@ -33,11 +35,10 @@ class GestionNotasService:
             raise NotaDuplicadaError(MENSAJE_DUPLICADA)
         
     def obtener_estado(self, estudiante_id: int, materia_id: str, semestre: str) -> str:
-        notas = self.repository.buscar_por_estudiante(estudiante_id)
-        registro = next(
-            (n for n in notas if n.materia_id == materia_id and n.semestre == semestre),
-            None,
-        )
-        if registro is None:
-            raise LookupError("No se encontró la nota.")
-        return "Aprobada" if registro.nota >= 3.0 else "Reprobada"
+        nota = self.repository.buscar_nota(estudiante_id, materia_id, semestre)
+        if nota is None:
+            raise NotaNoEncontradaError(MENSAJE_NOTA_NO_ENCONTRADA)
+        elif nota.nota >= 3.0:
+            return "Aprobada"
+        else:
+            return "Reprobada"

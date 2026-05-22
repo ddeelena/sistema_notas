@@ -18,3 +18,9 @@ class GestionNotasRepository:
             and n.semestre == semestre
             for n in self._store
         )
+    
+    def buscar_nota(self, estudiante_id: int, materia_id: str, semestre: str) -> Nota | None:
+        for n in self._store:
+            if n.estudiante_id == estudiante_id and n.materia_id == materia_id and n.semestre == semestre:
+                return n
+        return None
