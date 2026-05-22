@@ -42,3 +42,9 @@ class GestionNotasService:
             return "Aprobada"
         else:
             return "Reprobada"
+    
+    def obtener_promedio(self, estudiante_id: int) -> float:
+        notas = self.repository.buscar_por_estudiante(estudiante_id)
+        if not notas:
+            return 0.0
+        return sum(n.nota for n in notas) / len(notas)
