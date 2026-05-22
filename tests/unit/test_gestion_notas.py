@@ -107,3 +107,27 @@ def test_promedio_con_multiples_notas_calcula_correctamente(service):
     service.registrar_nota(1001, "MAT-02", "2026-1", 4.2)
     promedio = service.obtener_promedio(estudiante_id=1001)
     assert promedio == pytest.approx(3.85, rel=1e-3)
+
+# ── REQ 4: Duplicados ─────────────────────────────────────────────────────
+
+# TC-10: dos materias distintas, mismo semestre -> ambas se guardan
+def test_dos_materias_distintas_mismo_semestre_se_guardan(service):
+    service.registrar_nota(1001, "MAT-01", "2026-1", 4.0)
+    service.registrar_nota(1001, "MAT-02", "2026-1", 3.5)
+    notas = service.obtener_notas(estudiante_id=1001)
+    assert len(notas) == 2
+
+
+# TC-11: misma materia, semestres distintos -> ambas se guardan (histórico)
+def test_misma_materia_semestres_distintos_se_guardan(service):
+    service.registrar_nota(1001, "MAT-01", "2026-1", 2.5)
+    service.registrar_nota(1001, "MAT-01", "2026-2", 4.0)
+    notas = service.obtener_notas(estudiante_id=1001)
+    assert len(notas) == 2
+
+
+# TC-12: misma materia, mismo semestre -> lanza NotaDuplicadaError
+def test_misma_materia_mismo_semestre_lanza_error_duplicado(service):
+    service.registrar_nota(1001, "MAT-01", "2026-1", 3.5)
+    with pytest.raises(NotaDuplicadaError):
+        service.registrar_nota(1001, "MAT-01", "2026-1", 4.2)
