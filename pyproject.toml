@@ -10,3 +10,9 @@ dependencies = [
 ]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
+markers = [
+    "smoke: pruebas críticas básicas",
+    "critical: funcionalidades críticas",
+    "regression: pruebas de regresión"
+]

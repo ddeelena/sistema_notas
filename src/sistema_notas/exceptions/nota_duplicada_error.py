@@ -1,5 +1,5 @@
 class NotaDuplicadaError(Exception):
-    """Ya existe una nota para esta materia en este semestre."""
+    """El estudiante ya tiene una nota registrada para esta materia en el semestre seleccionado."""
     pass
 
 class NotaFueraDeRangoError(Exception):

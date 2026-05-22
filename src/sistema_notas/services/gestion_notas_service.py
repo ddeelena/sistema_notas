@@ -6,7 +6,7 @@ from sistema_notas.exceptions.nota_no_encontrada import NotaNoEncontradaError
 NOTA_MIN = 0.0
 NOTA_MAX = 5.0
 MENSAJE_RANGO = f"La nota debe estar entre {NOTA_MIN} y {NOTA_MAX}."
-MENSAJE_DUPLICADA = "Ya existe una nota para esta materia en este semestre."
+MENSAJE_DUPLICADA = "El estudiante ya tiene una nota registrada para esta materia en el semestre seleccionado."
 MENSAJE_NOTA_NO_ENCONTRADA = "No se encontró una nota para esta materia en este semestre."
 
 class GestionNotasService:
