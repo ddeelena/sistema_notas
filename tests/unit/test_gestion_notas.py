@@ -85,3 +85,25 @@ def test_nota_45_resulta_en_aprobada(service):
     service.registrar_nota(1001, "MAT-01", "2026-1", 4.5)
     estado = service.obtener_estado(1001, "MAT-01", "2026-1")
     assert estado == "Aprobada"
+
+# ── REQ 3: Promedio ───────────────────────────────────────────────────────
+
+# TC-07: sin notas -> promedio 0.0 (sin división por cero)
+def test_promedio_sin_notas_retorna_cero(service):
+    promedio = service.obtener_promedio(estudiante_id=1001)
+    assert promedio == 0.0
+
+
+# TC-08: una sola nota -> promedio igual a la nota
+def test_promedio_con_una_nota(service):
+    service.registrar_nota(1001, "MAT-01", "2026-1", 4.0)
+    promedio = service.obtener_promedio(estudiante_id=1001)
+    assert promedio == 4.0
+
+
+# TC-09: dos notas -> (3.5 + 4.2) / 2 = 3.85
+def test_promedio_con_multiples_notas_calcula_correctamente(service):
+    service.registrar_nota(1001, "MAT-01", "2026-1", 3.5)
+    service.registrar_nota(1001, "MAT-02", "2026-1", 4.2)
+    promedio = service.obtener_promedio(estudiante_id=1001)
+    assert promedio == pytest.approx(3.85, rel=1e-3)
