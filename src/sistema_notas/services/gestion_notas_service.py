@@ -4,6 +4,8 @@ from sistema_notas.exceptions.nota_duplicada_error import NotaFueraDeRangoError,
 
 NOTA_MIN = 0.0
 NOTA_MAX = 5.0
+MENSAJE_RANGO = f"La nota debe estar entre {NOTA_MIN} y {NOTA_MAX}."
+MENSAJE_DUPLICADA = "Ya existe una nota para esta materia en este semestre."
 
 class GestionNotasService:
     def __init__(self):
@@ -11,15 +13,21 @@ class GestionNotasService:
 
     def registrar_nota(self, estudiante_id: int, materia_id: str, semestre: str, nota: float) -> Nota:
         # Validar rango de nota
-        if nota < NOTA_MIN or nota > NOTA_MAX:
-            raise NotaFueraDeRangoError(f"La nota debe estar entre {NOTA_MIN} y {NOTA_MAX}.")
+        self.validar_rango_nota(nota)
 
         # Validar que no exista una nota para esta materia y semestre
-        if self.repository.existe(estudiante_id, materia_id, semestre):
-            raise NotaDuplicadaError("Ya existe una nota para esta materia en este semestre.")
+        self.validar_nota_duplicada(estudiante_id, materia_id, semestre)
 
         nueva_nota = Nota(estudiante_id=estudiante_id, materia_id=materia_id, semestre=semestre, nota=nota)
         self.repository.guardar(nueva_nota)
 
     def obtener_notas(self, estudiante_id: int) -> list[Nota]:
         return self.repository.buscar_por_estudiante(estudiante_id)
+    
+    def validar_rango_nota(self, nota: float):
+        if nota < NOTA_MIN or nota > NOTA_MAX:
+            raise NotaFueraDeRangoError(MENSAJE_RANGO)
+        
+    def validar_nota_duplicada(self, estudiante_id: int, materia_id: str, semestre: str):
+        if self.repository.existe(estudiante_id, materia_id, semestre):
+            raise NotaDuplicadaError(MENSAJE_DUPLICADA)
