@@ -31,3 +31,13 @@ class GestionNotasService:
     def validar_nota_duplicada(self, estudiante_id: int, materia_id: str, semestre: str):
         if self.repository.existe(estudiante_id, materia_id, semestre):
             raise NotaDuplicadaError(MENSAJE_DUPLICADA)
+        
+    def obtener_estado(self, estudiante_id: int, materia_id: str, semestre: str) -> str:
+        notas = self.repository.buscar_por_estudiante(estudiante_id)
+        registro = next(
+            (n for n in notas if n.materia_id == materia_id and n.semestre == semestre),
+            None,
+        )
+        if registro is None:
+            raise LookupError("No se encontró la nota.")
+        return "Aprobada" if registro.nota >= 3.0 else "Reprobada"
