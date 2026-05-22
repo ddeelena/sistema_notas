@@ -16,3 +16,8 @@ markers = [
     "critical: funcionalidades críticas",
     "regression: pruebas de regresión"
 ]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=7.1.0",
+]

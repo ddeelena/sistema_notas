@@ -147,4 +147,4 @@ Estudiante: 1001Materia: MAT-01Semestre: 2026-1Nota: 4.2 |
 2. Digitar los datos de entrada que duplican la combinación de llave existente.
 3. Intentar guardar. | 
 El sistema rechaza la transacción y lanza el error en pantalla: "El estudiante ya tiene una nota registrada para esta materia en el semestre seleccionado". | Negativo
-
+ 
