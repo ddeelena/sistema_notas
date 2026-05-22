@@ -147,4 +147,20 @@ Estudiante: 1001Materia: MAT-01Semestre: 2026-1Nota: 4.2 |
 2. Digitar los datos de entrada que duplican la combinación de llave existente.
 3. Intentar guardar. | 
 El sistema rechaza la transacción y lanza el error en pantalla: "El estudiante ya tiene una nota registrada para esta materia en el semestre seleccionado". | Negativo
- 
+
+
+REFLEXIÓN
+
+Primero: ¿qué diferencia notaste entre diseñar los casos de prueba en la tabla antes de escribir código versus simplemente ponerte a programar directamente?
+
+La diferencia es clara, como ya tenia los casos de pruebas listos, solamente era "hacer la traduccion" mas no tenía que detenerme a pensar en que pruebas tenía que hacer con que dato si o con que dato y démas
+
+
+Segundo: ¿qué fue lo más difícil de seguir el ciclo TDD y en qué momento sentiste la tentación de saltarte algún paso?
+
+En el ciclo de TDD creo que lo más difícil es la refactorización porque en algunos casos no es tan visible que mejorar si en la fase green se penso en hacerlo bien, ya que aunque se supone que es hacerlo solo para que pase a veces directamente yo hacía la función completa y como debería quedar refactorizada y  luego me tenía que devolver a hacerla un poco más sencilla o quitarle algún complemento. 
+
+En el último requisito no es que quisiera saltarme pasos solo apenas realice el test ya habian pasado por las implementaciones de las demás funcionalidades, mientras que en el requisito 3 en el promedio no sabía que más poner entonces pensé en no hacer refactor. 
+
+
+
