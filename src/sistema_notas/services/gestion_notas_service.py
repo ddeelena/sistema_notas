@@ -47,4 +47,5 @@ class GestionNotasService:
         notas = self.repository.buscar_por_estudiante(estudiante_id)
         if not notas:
             return 0.0
-        return sum(n.nota for n in notas) / len(notas)
+        total = sum(n.nota for n in notas)
+        return round(total / len(notas), 2)
