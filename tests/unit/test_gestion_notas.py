@@ -7,9 +7,6 @@ from sistema_notas.exceptions.nota_duplicada_error import (
 )
 
 
-@pytest.fixture
-def service():
-    return GestionNotasService()
 
 
 # ── REQ 1: Rango de notas ──────────────────────────────────────────────────
@@ -131,3 +128,42 @@ def test_misma_materia_mismo_semestre_lanza_error_duplicado(service):
     service.registrar_nota(1001, "MAT-01", "2026-1", 3.5)
     with pytest.raises(NotaDuplicadaError):
         service.registrar_nota(1001, "MAT-01", "2026-1", 4.2)
+
+def test_eliminar_nota_existente(service):
+
+    service.registrar_nota(
+        1001,
+        "MAT-01",
+        "2026-1",
+        4.5
+    )
+
+    service.eliminar_nota(
+        1001,
+        "MAT-01",
+        "2026-1"
+    )
+
+    notas = service.obtener_notas(1001)
+
+    assert len(notas) == 0
+
+def test_listar_notas(service):
+
+    service.registrar_nota(
+        1001,
+        "MAT-01",
+        "2026-1",
+        4.0
+    )
+
+    service.registrar_nota(
+        1002,
+        "MAT-02",
+        "2026-1",
+        3.5
+    )
+
+    notas = service.listar_notas()
+
+    assert len(notas) == 2

@@ -164,3 +164,4 @@ En el último requisito no es que quisiera saltarme pasos solo apenas realice el
 
 
 
+Comandos para correr las pruebas: uv run pytest -v
