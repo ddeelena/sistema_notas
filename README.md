@@ -165,3 +165,4 @@ En el último requisito no es que quisiera saltarme pasos solo apenas realice el
 
 
 Comandos para correr las pruebas: uv run pytest -v
+comando para correr las pruebas desde el contenedor: docker compose run --rm app uv run pytest

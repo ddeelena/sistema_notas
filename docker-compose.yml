@@ -1,0 +1,44 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: mysql_sistema_notas
+
+    environment:
+      MYSQL_ROOT_PASSWORD: "2404"
+      MYSQL_DATABASE: sistema_notas
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p2404"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+
+    container_name: app_sistema_notas
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: sistema_notas
+      DB_USER: root
+      DB_PASSWORD: 2404
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
