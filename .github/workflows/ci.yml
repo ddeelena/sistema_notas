@@ -49,11 +49,15 @@ jobs:
         with:
           version: latest
 
-      - name: Instalar Python 3.12
-        run: uv python install 3.12
+      - name: Instalar Python 3.14
+        run: uv python install 3.14
 
       - name: Instalar dependencias
         run: uv sync --dev
+
+      - name: Probar import MySQL
+        run: |
+          uv run python -c "import mysql.connector; print('MYSQL OK')"
 
       - name: Instalar cliente MySQL
         run: |

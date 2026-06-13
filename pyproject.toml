@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "pytest>=9.0.3",
     "pytest-bdd>=8.1.0",
+    "mysql-connector-python>=9.7.0"
 ]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -20,7 +21,4 @@ markers = [
 [dependency-groups]
 dev = [
     "pytest-cov>=7.1.0",
-]
-dependencies = [
-    "mysql-connector-python>=9.7.0"
 ]
