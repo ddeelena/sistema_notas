@@ -1,77 +1,77 @@
 name: CI — Tests y Cobertura
 
 on:
-push:
-branches: [master]
-pull_request:
-branches: [master]
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-test:
-runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-```
-services:
-  mysql:
-    image: mysql:8.0
-    env:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: sistema_notas
-    ports:
-      - 3306:3306
-    options: >-
-      --health-cmd="mysqladmin ping -h localhost -proot"
-      --health-interval=10s
-      --health-timeout=5s
-      --health-retries=10
 
-env:
-  DB_HOST: 127.0.0.1
-  DB_PORT: 3306
-  DB_NAME: sistema_notas
-  DB_USER: root
-  DB_PASSWORD: root
+  services:
+    mysql:
+      image: mysql:8.0
+      env:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: sistema_notas
+      ports:
+        - 3306:3306
+      options: >-
+        --health-cmd="mysqladmin ping -h localhost -proot"
+        --health-interval=10s
+        --health-timeout=5s
+        --health-retries=10
 
-steps:
-  - name: Checkout del código
-    uses: actions/checkout@v4
+  env:
+    DB_HOST: 127.0.0.1
+    DB_PORT: 3306
+    DB_NAME: sistema_notas
+    DB_USER: root
+    DB_PASSWORD: root
 
-  - name: Instalar uv
-    uses: astral-sh/setup-uv@v4
-    with:
-      version: "latest"
+  steps:
+    - name: Checkout del código
+      uses: actions/checkout@v4
 
-  - name: Instalar Python 3.12
-    run: uv python install 3.12
+    - name: Instalar uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
 
-  - name: Instalar dependencias
-    run: uv sync --dev
+    - name: Instalar Python 3.12
+      run: uv python install 3.12
 
-  - name: Esperar MySQL
-    run: |
-      sleep 15
+    - name: Instalar dependencias
+      run: uv sync --dev
 
-  - name: Crear tabla notas
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y mysql-client
+    - name: Esperar MySQL
+      run: |
+        sleep 15
 
-      mysql -h 127.0.0.1 -u root -proot sistema_notas <<EOF
-      CREATE TABLE IF NOT EXISTS notas (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          estudiante_id INT NOT NULL,
-          materia_id VARCHAR(50) NOT NULL,
-          semestre VARCHAR(20) NOT NULL,
-          nota DECIMAL(3,2) NOT NULL,
-          UNIQUE (estudiante_id, materia_id, semestre)
-      );
-      EOF
+    - name: Crear tabla notas
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client
 
-  - name: Ejecutar todos los tests con cobertura
-    run: |
-      uv run pytest tests/ \
-        --cov=src \
-        --cov-report=term-missing \
-        --cov-fail-under=80 \
-        -v
+        mysql -h 127.0.0.1 -u root -proot sistema_notas <<EOF
+        CREATE TABLE IF NOT EXISTS notas (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            estudiante_id INT NOT NULL,
+            materia_id VARCHAR(50) NOT NULL,
+            semestre VARCHAR(20) NOT NULL,
+            nota DECIMAL(3,2) NOT NULL,
+            UNIQUE (estudiante_id, materia_id, semestre)
+        );
+        EOF
+
+    - name: Ejecutar todos los tests con cobertura
+      run: |
+        uv run pytest tests/ \
+          --cov=src \
+          --cov-report=term-missing \
+          --cov-fail-under=80 \
+          -v
 
