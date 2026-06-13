@@ -21,3 +21,6 @@ markers = [
 dev = [
     "pytest-cov>=7.1.0",
 ]
+dependencies = [
+    "mysql-connector-python>=9.7.0"
+]
